@@ -10,23 +10,19 @@ exports.getAddProduct = (req, res, next) => {
     })
 }
 
-exports.postAddProduct = (req, res, next) => {
-    const product = new Product(req.body.title)
-    product.save()
-
-
-    res.redirect("/")
-}
-
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll((products) => {
-        res.render('shop/product-list', {
-            prods: products,
-            pageTitle: 'Add Product',
-            path: '/',
-            hasProducts: products.length > 0,
-            activeShop: true,
-            productCSS: true
+    Product.fetchAll()
+        .then(([rows, fieldData]) => {
+            res.render('shop/product-list', {
+                prods: rows,
+                pageTitle: 'Add Product',
+                path: '/',
+                hasProducts: rows.length > 0,
+                activeShop: true,
+                productCSS: true
+            })
         })
-    })
+        .catch(err => {
+            console.log(err)
+        })
 }
