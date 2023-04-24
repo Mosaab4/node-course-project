@@ -14,7 +14,7 @@ const MONGODB_URI = 'mongodb://admin:password@localhost:27017?authMechanism=DEFA
 const app = express()
 const store = new MongoDBStore({
     uri: MONGODB_URI,
-    collection : "sessions"
+    collection: "sessions"
 })
 
 app.set('view engine', 'ejs')
@@ -34,7 +34,7 @@ app.use(session({
 }))
 
 app.use((req, res, next) => {
-    if (!req.session.user){
+    if (!req.session.user) {
         return next()
     }
     User.findById(req.session.user._id)
@@ -58,18 +58,6 @@ mongoose
         }
     )
     .then(result => {
-        User.findOne().then(user => {
-            if (!user) {
-                const user = new User({
-                    name: 'Mosaab',
-                    email: 'max@test.com',
-                    cart: {
-                        items: []
-                    }
-                })
-                user.save()
-            }
-        })
         app.listen(3000)
     })
     .catch(err => {
